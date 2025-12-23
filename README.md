@@ -5,3 +5,6 @@ This is my first Git repository.
 "This repository demonstrates Git basics for technical writers." 
 "" 
 "## Installation" 
+"" 
+"## Usage" 
+"This is just a test." 
