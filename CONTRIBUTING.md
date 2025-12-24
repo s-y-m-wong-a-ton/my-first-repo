@@ -17,7 +17,15 @@ Please follow these guidelines:
 
 - Use **clear variable names**
 - Add *comments* for complex logic
-- Follow the [style guide](link-to-style-guide)
+
+## Style Guide
+   
+   All documentation must follow our [style guide](STYLE_GUIDE.md).
+   
+   Key rules:
+   - Use sentence case for headings
+   - Always use the Oxford comma
+   - Write in second person
 
 ## Example
 
