@@ -7,6 +7,12 @@ This repository demonstrates Git basics for technical writers.
 ## Installation 
 Installation instructions should go here.
 
+## Features
+   
+   - Easy to use
+   - Well documented
+   - Open source
+
 ## Usage 
 This is just a test.
 
