@@ -1,14 +1,16 @@
 name: Vale Linting
 
-# When should this run?
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'docs/**'  # Only run when docs folder changes
   pull_request:
     branches: [ main ]
-  workflow_dispatch:  # ← ADD THIS LINE - allows manual triggering
+    paths:
+      - 'docs/**'
+  workflow_dispatch:  # Manual trigger
 
-# What should it do?
 jobs:
   vale:
     runs-on: ubuntu-latest
@@ -25,13 +27,15 @@ jobs:
           tar -xzf vale_3.13.0_Linux_64-bit.tar.gz
           sudo mv vale /usr/local/bin/
       
-      # Step 3: Download your style rules
+      # Step 3: Download style packages into docs/styles
       - name: Download style packages
         run: |
-          mkdir -p styles
-          git clone --depth 1 https://github.com/errata-ai/Microsoft styles/Microsoft
-          git clone --depth 1 https://github.com/errata-ai/write-good styles/write-good
+          mkdir -p docs/styles
+          git clone --depth 1 https://github.com/errata-ai/Microsoft docs/styles/Microsoft
+          git clone --depth 1 https://github.com/errata-ai/write-good docs/styles/write-good
       
-      # Step 4: Run Vale on all markdown files
-      - name: Run Vale
-        run: vale --output=line . || true
+      # Step 4: Run Vale on docs folder
+      - name: Run Vale on docs folder
+        run: |
+          cd docs
+          vale --output=line . || true
