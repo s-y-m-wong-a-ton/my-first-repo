@@ -183,7 +183,7 @@ Or for invalid values:
 
 ## Code examples
 
-### curl
+### cURL
 
 ```bash
 curl -X POST "https://api.taskflow.com/api/v1/projects" \
