@@ -6,6 +6,7 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:  # ← ADD THIS LINE - allows manual triggering
 
 # What should it do?
 jobs:
