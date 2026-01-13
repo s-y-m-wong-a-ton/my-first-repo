@@ -38,7 +38,8 @@ jobs:
       - name: Run Vale on docs folder
         run: |
           cd docs
-          vale --output=line . > vale-report.txt || true
+          vale --output=line . > ../vale-report.txt || true
+          cd ..          
           cat vale-report.txt
           echo "📊 Vale Report Generated"
 
