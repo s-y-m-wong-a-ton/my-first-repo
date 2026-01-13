@@ -28,24 +28,19 @@ jobs:
       - name: Download and Clean Styles
         run: |
           mkdir -p docs/styles
+          cd docs/styles
           
-          # 1. Clone Microsoft
-          git clone --depth 1 https://github.com/errata-ai/Microsoft docs/styles/msft_tmp
-          # Move everything inside the nested Microsoft folder up to docs/styles/Microsoft
-          mv docs/styles/msft_tmp/Microsoft docs/styles/Microsoft
+          # Download Microsoft Style (Production Release)
+          curl -L https://github.com/errata-ai/Microsoft/releases/latest/download/Microsoft.zip -o Microsoft.zip
+          unzip Microsoft.zip && rm Microsoft.zip
           
-          # 2. Clone write-good
-          git clone --depth 1 https://github.com/errata-ai/write-good docs/styles/wg_tmp
-          # Move the contents of the nested write-good folder up
-          mv docs/styles/wg_tmp/write-good docs/styles/write-good
+          # Download write-good Style (Production Release)
+          curl -L https://github.com/errata-ai/write-good/releases/latest/download/write-good.zip -o write-good.zip
+          unzip write-good.zip && rm write-good.zip
           
-          # 3. CLEANUP - This stops the .yamllint.yml E201 error
-          # We remove the temp folders first
-          rm -rf docs/styles/msft_tmp docs/styles/wg_tmp
-          
-          # We remove the problematic YAML files that trigger GitHub's background linter
-          find docs/styles -type f \( -name "*.yml" -o -name "*.yaml" \) ! -path "*/rules/*" -delete
-          find docs/styles -name ".github" -type d -exec rm -rf {} +
+          # Verify structure (This will show up in your logs)
+          echo "Current directory: $(pwd)"
+          ls -F
 
       - name: Run Vale
         run: |
