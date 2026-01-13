@@ -24,7 +24,7 @@ The following table lists request headers you can use to make API calls to TaskF
 | `Content-Type` | Yes | The media type of the resource. Format: `application/json` |
 | `Accept` | No | Response format. Default: `application/json` |
 
-### Request body
+### Request Body
 
 The following table lists the parameters (including requirements for each parameter) that you must include in the JSON you send to TaskFlow. 
 
