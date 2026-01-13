@@ -38,17 +38,14 @@ jobs:
       - name: Run Vale
         run: |
           cd docs
-          echo "Checking directory: $(pwd)"
-          echo "Files found: $(ls *.md)"
+          echo "--- Verifying Styles Exist ---"
+          ls -R styles/Microsoft | head -n 10
           
-          # We use --config to explicitly point to the ini file
-          # and target the files directly
-          vale --config=.vale.ini --output=line *.md > ../vale-report.txt 2>&1 || true
+          # Run with -v (verbose) to see if Vale complains about missing styles
+          vale --output=line *.md > ../vale-report.txt 2>&1 || true
           
           cd ..
-          echo "--- REPORT START ---"
           cat vale-report.txt
-          echo "--- REPORT END ---"
 
       - name: Upload Vale Report
         uses: actions/upload-artifact@v4
