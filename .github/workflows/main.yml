@@ -38,11 +38,17 @@ jobs:
       - name: Run Vale
         run: |
           cd docs
-          # We explicitly target ONLY .md files in the current directory.
-          # This prevents Vale from descending into the 'styles' folder.
-          vale --output=line *.md > ../vale-report.txt 2>&1 || true
+          echo "Checking directory: $(pwd)"
+          echo "Files found: $(ls *.md)"
+          
+          # We use --config to explicitly point to the ini file
+          # and target the files directly
+          vale --config=.vale.ini --output=line *.md > ../vale-report.txt 2>&1 || true
+          
           cd ..
+          echo "--- REPORT START ---"
           cat vale-report.txt
+          echo "--- REPORT END ---"
 
       - name: Upload Vale Report
         uses: actions/upload-artifact@v4
