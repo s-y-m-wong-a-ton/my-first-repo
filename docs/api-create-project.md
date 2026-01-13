@@ -8,7 +8,7 @@ Creates a new project in TaskFlow.
 
 ## Authentication
 
-Requires API key authentication. Include `Authorization: Bearer YOUR_API_KEY` header in all requests. See [Authentication Guide](./authentication-guide.md) for details.
+Requires API key authentication. Include `Authorization: Bearer YOUR_API_KEY` header in all requests. See [Authentication](./authentication.md) for details.
 
 ## Request 
 
