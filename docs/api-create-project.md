@@ -12,7 +12,7 @@ Requires API key authentication. Include `Authorization: Bearer YOUR_API_KEY` he
 
 ## Request 
 
-### Request Headers
+### Request headers
 
 The following table lists request headers you can use to make API calls to TaskFlow.
 
