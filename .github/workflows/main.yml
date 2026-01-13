@@ -38,10 +38,14 @@ jobs:
       - name: Run Vale on docs folder
         run: |
           cd docs
-          vale --output=line . > ../vale-report.txt || true
-          cd ..          
+          echo "Vale Linting Report" > ../vale-report.txt
+          echo "===================" >> ../vale-report.txt
+          echo "Date: $(date)" >> ../vale-report.txt
+          echo "" >> ../vale-report.txt
+          vale --glob='*.md' --output=line . >> ../vale-report.txt 2>&1 || true
+          cd ..
+          echo "📊 Vale Report:"
           cat vale-report.txt
-          echo "📊 Vale Report Generated"
 
       # Step 5: Upload report as artifact
       - name: Upload Vale Report
