@@ -38,4 +38,13 @@ jobs:
       - name: Run Vale on docs folder
         run: |
           cd docs
-          vale --output=line . || true
+          vale --output=line . > vale-report.txt || true
+          cat vale-report.txt
+          echo "📊 Vale Report Generated"
+
+      # Step 5: Upload report as artifact
+      - name: Upload Vale Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: vale-report
+          path: vale-report.txt
