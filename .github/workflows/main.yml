@@ -33,7 +33,8 @@ jobs:
           mkdir -p docs/styles
           git clone --depth 1 https://github.com/errata-ai/Microsoft docs/styles/Microsoft
           git clone --depth 1 https://github.com/errata-ai/write-good docs/styles/write-good
-      
+          rm -rf docs/styles/*/.github  # Remove all .github folders from styles
+
       # Step 4: Run Vale on docs folder
       - name: Run Vale on docs folder
         run: |
@@ -42,9 +43,8 @@ jobs:
           echo "===================" >> ../vale-report.txt
           echo "Date: $(date)" >> ../vale-report.txt
           echo "" >> ../vale-report.txt
-          vale --glob='*.md' --output=line . >> ../vale-report.txt 2>&1 || true
+          vale *.md >> ../vale-report.txt 2>&1 || true
           cd ..
-          echo "📊 Vale Report:"
           cat vale-report.txt
 
       # Step 5: Upload report as artifact
