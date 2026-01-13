@@ -28,10 +28,17 @@ jobs:
       - name: Download and Clean Styles
         run: |
           mkdir -p docs/styles
-          git clone --depth 1 https://github.com/errata-ai/Microsoft docs/styles/Microsoft
-          git clone --depth 1 https://github.com/errata-ai/write-good docs/styles/write-good
           
-          # Kill the YAML files that trigger the GitHub E201 error
+          # Clone Microsoft and flatten it
+          git clone --depth 1 https://github.com/errata-ai/Microsoft docs/styles/msft_tmp
+          mv docs/styles/msft_tmp/Microsoft docs/styles/Microsoft
+          
+          # Clone write-good and flatten it (it has a similar nested structure)
+          git clone --depth 1 https://github.com/errata-ai/write-good docs/styles/wg_tmp
+          mv docs/styles/wg_tmp/write-good docs/styles/write-good
+          
+          # Cleanup temporary folders and problematic YAML
+          rm -rf docs/styles/msft_tmp docs/styles/wg_tmp
           find docs/styles -type f \( -name "*.yml" -o -name "*.yaml" \) ! -path "*/rules/*" -delete
           find docs/styles -name ".github" -type d -exec rm -rf {} +
 
