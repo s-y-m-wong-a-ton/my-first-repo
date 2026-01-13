@@ -16,34 +16,34 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      # Step 1: Checkout your repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Run Vale using the official Action
-      - name: Vale Linting
-        uses: errata-ai/vale-action@v2
-        with:
-          # This handles the download and installation of styles automatically
-          styles: |
-            https://github.com/errata-ai/Microsoft/releases/latest/download/Microsoft.zip
-            https://github.com/errata-ai/write-good/releases/latest/download/write-good.zip
-          
-          # Point to your docs folder
-          files: docs/
-          
-          # This will post the results directly into the PR/Action summary
-          fail_on_error: false 
-
-      # Step 3: Optional - Create a custom text report like your previous script
-      # Note: The action already creates a nice UI summary, but this keeps your artifact
-      - name: Generate Manual Report
+      - name: Install Vale
         run: |
-          echo "Vale Linting Report" > vale-report.txt
-          echo "===================" >> vale-report.txt
-          echo "Date: $(date)" >> vale-report.txt
-          # We run the local vale binary (installed by the action) to generate the file
-          ./bin/vale --output=line docs/*.md >> vale-report.txt 2>&1 || true
+          wget https://github.com/errata-ai/vale/releases/download/v3.13.0/vale_3.13.0_Linux_64-bit.tar.gz
+          tar -xzf vale_3.13.0_Linux_64-bit.tar.gz
+          sudo mv vale /usr/local/bin/
+
+      - name: Download and Clean Styles
+        run: |
+          # Create the styles folder inside docs
+          mkdir -p docs/styles
+          git clone --depth 1 https://github.com/errata-ai/Microsoft docs/styles/Microsoft
+          git clone --depth 1 https://github.com/errata-ai/write-good docs/styles/write-good
+          
+          # Remove the files causing the E201 yamllint error
+          find docs/styles -name ".yamllint.yml" -type f -delete
+          find docs/styles -name ".github" -type d -exec rm -rf {} +
+
+      - name: Run Vale
+        run: |
+          # Move into the docs folder so Vale finds the .vale.ini
+          cd docs
+          # Run Vale on all markdown files in this directory
+          vale --output=line . > ../vale-report.txt 2>&1 || true
+          cd ..
+          cat vale-report.txt
 
       - name: Upload Vale Report
         uses: actions/upload-artifact@v4
