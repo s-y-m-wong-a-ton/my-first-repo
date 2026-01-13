@@ -31,22 +31,16 @@ jobs:
           git clone --depth 1 https://github.com/errata-ai/Microsoft docs/styles/Microsoft
           git clone --depth 1 https://github.com/errata-ai/write-good docs/styles/write-good
           
-          # 1. Remove the hidden .github folders
-          find docs/styles -name ".github" -type d -exec rm -rf {} +
-
-          # 2. Remove ANY .yml or .yaml files that are NOT in a 'rules' folder
-          # This kills the coverage files and config files causing the E201 error
+          # Kill the YAML files that trigger the GitHub E201 error
           find docs/styles -type f \( -name "*.yml" -o -name "*.yaml" \) ! -path "*/rules/*" -delete
-
-          # 3. Specifically kill the file mentioned in your error just to be safe
-          rm -rf docs/styles/Microsoft/coverage
+          find docs/styles -name ".github" -type d -exec rm -rf {} +
 
       - name: Run Vale
         run: |
-          # Move into the docs folder so Vale finds the .vale.ini
           cd docs
-          # Run Vale on all markdown files in this directory
-          vale --output=line . > ../vale-report.txt 2>&1 || true
+          # We explicitly target ONLY .md files in the current directory.
+          # This prevents Vale from descending into the 'styles' folder.
+          vale --output=line *.md > ../vale-report.txt 2>&1 || true
           cd ..
           cat vale-report.txt
 
