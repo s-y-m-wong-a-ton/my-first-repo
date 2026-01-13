@@ -43,7 +43,14 @@ jobs:
           echo "===================" >> ../vale-report.txt
           echo "Date: $(date)" >> ../vale-report.txt
           echo "" >> ../vale-report.txt
-          vale *.md >> ../vale-report.txt 2>&1 || true
+
+          # Only check .md files in current directory (not subdirectories)
+          for file in *.md; do
+            if [ -f "$file" ]; then
+              vale --output=line "$file" >> ../vale-report.txt 2>&1 || true
+            fi
+          done
+
           cd ..
           cat vale-report.txt
 
