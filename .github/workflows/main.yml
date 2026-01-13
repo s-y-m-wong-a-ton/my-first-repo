@@ -27,14 +27,19 @@ jobs:
 
       - name: Download and Clean Styles
         run: |
-          # Create the styles folder inside docs
           mkdir -p docs/styles
           git clone --depth 1 https://github.com/errata-ai/Microsoft docs/styles/Microsoft
           git clone --depth 1 https://github.com/errata-ai/write-good docs/styles/write-good
           
-          # Remove the files causing the E201 yamllint error
-          find docs/styles -name ".yamllint.yml" -type f -delete
+          # 1. Remove the hidden .github folders
           find docs/styles -name ".github" -type d -exec rm -rf {} +
+
+          # 2. Remove ANY .yml or .yaml files that are NOT in a 'rules' folder
+          # This kills the coverage files and config files causing the E201 error
+          find docs/styles -type f \( -name "*.yml" -o -name "*.yaml" \) ! -path "*/rules/*" -delete
+
+          # 3. Specifically kill the file mentioned in your error just to be safe
+          rm -rf docs/styles/Microsoft/coverage
 
       - name: Run Vale
         run: |
